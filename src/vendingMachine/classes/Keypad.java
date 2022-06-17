@@ -8,20 +8,23 @@ public class Keypad {
 private String value="";
 private boolean isChecking=false;
 
+final private  HashMap<String, String> keys = new HashMap<String, String>();
+public Keypad(){
+	initialize();
+
+}
+public void clearValue() {
+	setValue("");
+}
+
 public boolean getIsChecking() {
 	return isChecking;
 }
-public void setIsChecking(boolean checking) {
-	this.isChecking= checking;
+
+
+public String getValue() {
+	return value;
 }
-private boolean isValidLength(InputType type){
-	int length=type.getLength();
-	return value.length()==length;
-}
-
-final private  HashMap<String, String> keys = new HashMap<String, String>();
-
-
 private void initialize() {
 	if(keys.isEmpty()) {
 	keys.put("1", "1");
@@ -44,21 +47,10 @@ private void initialize() {
 	keys.put("cancel", "cancel");
 	}
 }
-public Keypad(){
-	initialize();
 
-}
-
-public String getValue() {
-	return value;
-}
-
-public void clearValue() {
-	setValue("");
-}
-
-private void setValue(String value) {
-	this.value = value;
+private boolean isValidLength(InputType type){
+	int length=type.getLength();
+	return value.length()==length;
 }
 
 public void pressKey(String input,InputType type) {
@@ -91,6 +83,14 @@ public void pressKey(String input,InputType type) {
 		
 	}
 	}
+
+public void setIsChecking(boolean checking) {
+	this.isChecking= checking;
+}
+
+private void setValue(String value) {
+	this.value = value;
+}
 	}
 
 

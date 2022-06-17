@@ -24,6 +24,22 @@ void dropAmount(double price){
 	//throw error not valdiated
 }
 
+public double getValue() {
+	return value;
+	//exception
+}
+public boolean isBlocked() {
+	return isBlocked;
+}
+
+public boolean isValidated() {
+	return validated;
+}
+
+private void setValidated(boolean value) {
+	this.validated = value;
+}
+
 public void validateCard(String pin){
 	if(!isBlocked) {
 	if(pinCode.equals(pin)) {
@@ -38,22 +54,6 @@ public void validateCard(String pin){
 	}
 	//throw exception
 	
-}
-public boolean isBlocked() {
-	return isBlocked;
-}
-
-public boolean isValidated() {
-	return validated;
-}
-
-private void setValidated(boolean value) {
-	this.validated = value;
-}
-
-public double getValue() {
-	return value;
-	//exception
 }
 
 

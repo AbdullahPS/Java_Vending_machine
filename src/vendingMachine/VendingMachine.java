@@ -1,8 +1,8 @@
 package vendingMachine;
 
 public interface VendingMachine {
-	void displayMessage(String message);
 	boolean checkMoneyIsValid(int amount);
+	void displayMessage(String message);
 	void returnMoney();
 	void returnProduct();
 	

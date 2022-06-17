@@ -2,15 +2,15 @@ package vendingMachine;
 
 import java.util.Scanner;
 
+import User.User;
 import vendingMachine.Payment.Card;
 import vendingMachine.Payment.Coin;
 import vendingMachine.Payment.Note;
-import User.User;
 
 public class Main {
 	public static void main (String args[]) {
-	
-		
+
+
 		VendingMachineImpl machine =new VendingMachineImpl();
 		User user = new User("Abdullah",new Card("1234",200.0));
 		//user.set
@@ -54,10 +54,10 @@ public class Main {
 				case 5:
 					machine.acceptMoney(Note.TwentyDollar);
 					break;
-				case 6:  
+				case 6:
 					machine.acceptMoney(Note.FiftyDollar);
 				case 7:break;
-					
+
 				}
 			}while (machine.getCanAcceptMoney());
 			break;
@@ -69,14 +69,14 @@ public class Main {
 			System.out.println("Thank you!! Enjoy your day");
 			break;
 		}
-	
-		
+
+
 
 
 		}
 		}
 
 
-			
+
 		}
 

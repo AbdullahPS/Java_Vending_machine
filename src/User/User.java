@@ -17,6 +17,21 @@ public User(String name,Card card) {
 public Card getCard() {
 	return card;
 }
+public void insertCard( )  {
+	
+}
+public int insertMoney(Scanner scanner) {
+	System.out.println("Please Choose what do you want to insert \n\n");
+	System.out.println("1. 10 Cent Coin ");
+	System.out.println("2. 20 Cent Coin ");
+	System.out.println("3. 50 Cent Coin ");
+	System.out.println("4. 1 Dollar Coin ");
+	System.out.println("5. 20 Dollar Coin ");
+	System.out.println("6. 50 Dollar Coin ");
+	return scanner.nextInt();
+	
+}
+public void selectItems() {}
 public void showItems(TreeMap<String,Product> machineItems){
 
 	int i=0;
@@ -34,22 +49,6 @@ public void showItems(TreeMap<String,Product> machineItems){
 			System.out.println("\n--------------------------------------------------------------------------------");
 }
 		}
-	
-}
-public int insertMoney(Scanner scanner) {
-	System.out.println("Please Choose what do you want to insert \n\n");
-	System.out.println("1. 10 Cent Coin ");
-	System.out.println("2. 20 Cent Coin ");
-	System.out.println("3. 50 Cent Coin ");
-	System.out.println("4. 1 Dollar Coin ");
-	System.out.println("5. 20 Dollar Coin ");
-	System.out.println("6. 50 Dollar Coin ");
-	System.out.println("7. Bank Card");
-	return scanner.nextInt();
-	
-}
-public void selectItems() {}
-public void insertCard( )  {
 	
 }
 

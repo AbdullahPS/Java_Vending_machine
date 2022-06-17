@@ -15,27 +15,27 @@ public class Product {
 		this.id=id;
 	
 	}
-	public Item getItem() {
-		return item;
+	public void decreaseQuantity(){
+		this.quantity-=1;
 	}
 	
 	
-	public int getQuantity() {
-		return quantity;}
-	
-	public void setQuantity(int quantity) {
-		this.quantity+=quantity;}
-	
-	public void decreaseQuantity(){
-		this.quantity-=1;
+	public Item getItem() {
+		return item;
 	}
 	
 	public double getPrice() {
 		return item.getPrice()
 ;	}
+	
+	public int getQuantity() {
+		return quantity;}
+	
 	public boolean isAvailable() {
 		return quantity>0;
 	}
+	public void setQuantity(int quantity) {
+		this.quantity+=quantity;}
 	
 	
 }

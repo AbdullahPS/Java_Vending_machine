@@ -18,24 +18,40 @@ public class Bucket {
 	private ArrayList<Note> currentNotes =new ArrayList<Note>();
 	private ArrayList<Coin> currentCoins=new ArrayList<Coin>();
 
+	public Bucket(){
+		  fillCoins();
+		  fillNotes();
+	}
 	public void clearBucket() {
 		currentNotes.clear();
 		currentCoins.clear();
 	}
-	public void giveNote(Note note) {
-		int currentAmount=machineNotes.get(note);
-		machineNotes.put(note,currentAmount-1);
-	}
-	public void insertNote(Note note) {
-		int currentAmount=machineNotes.get(note);
-		machineNotes.put(note,currentAmount+1);
+	private void fillCoins() {
+			machineCoins.put(Coin.TenCent,10 );
+			machineCoins.put(Coin.TwentyCent, 10);
+			machineCoins.put(Coin.FiftyCent, 10);
+			machineCoins.put(Coin.OneDollar, 10);
+	 }
+	private void fillNotes() {
+			machineNotes.put(Note.TwentyDollar, 5);
+			machineNotes.put(Note.FiftyDollar, 5);
+	 }
+	public double getCurrentAmount() {
+		double currentAmount=0;
+	
 
-
+		for (int i=0;i<currentNotes.size();i++) {
+			currentAmount+=currentNotes.get(i).getValue();
+			
+		}
+		for (int i=0;i<currentCoins.size();i++) {
+			currentAmount+=currentCoins.get(i).getValue();
+			
+		}
+		return currentAmount;
 	}
-	private void giveCoin(Coin coin) {
-		int currentAmount=machineCoins.get(coin);
-		machineCoins.put(coin,currentAmount-1);
-	}
+	
+	
 	public void getPossibleCombinations(double change) {
 		
 		//we assume that the bucket of the vendor is always filled and that 
@@ -59,9 +75,57 @@ public class Bucket {
 		withDraw(noteQuantities,coinQuantities);
 
 	}
+
+		
+	
+	private void giveCoin(Coin coin) {
+		int currentAmount=machineCoins.get(coin);
+		machineCoins.put(coin,currentAmount-1);
+	}
+	public void giveNote(Note note) {
+		int currentAmount=machineNotes.get(note);
+		machineNotes.put(note,currentAmount-1);
+	}
+	
+	public void insertCoin(Coin coin) {
+		int currentAmount=machineCoins.get(coin);
+		machineCoins.put(coin,currentAmount+1);
+	}
+	public void insertCurrentCoin(Coin coin) {
+
+		currentCoins.add(coin);
+
+
+	}
 	
 	
-	private void withDraw(Map <Note,Integer >noteQuantities,Map <Coin,Integer >coinQuantities){
+	public void insertCurrentNote(Note note) {
+		currentNotes.add(note);
+
+
+	}
+	
+	public void insertNote(Note note) {
+		int currentAmount=machineNotes.get(note);
+		machineNotes.put(note,currentAmount+1);
+
+
+	}
+	 public void insertPurchaseMoney() {
+		System.out.println(machineCoins);
+		System.out.println(machineNotes);
+	for(int i=0;i<currentNotes.size();i++) {
+		insertNote(currentNotes.get(i));
+	}	
+	for(int i=0;i<currentCoins.size();i++) {
+		insertCoin(currentCoins.get(i));
+	}
+	clearBucket();
+	System.out.println(machineCoins);
+	System.out.println(machineNotes);
+		
+	}
+	 private void withDraw(Map <Note,Integer >noteQuantities,Map <Coin,Integer >coinQuantities){
 		System.out.println(machineNotes);
 		System.out.println(machineCoins);
 		for (Entry<Coin, Integer> entry : coinQuantities.entrySet()) {
@@ -81,68 +145,4 @@ public class Bucket {
 		System.out.println(machineNotes);
 		System.out.println(machineCoins);
 		}
-
-		
-	
-	public void insertPurchaseMoney() {
-		System.out.println(machineCoins);
-		System.out.println(machineNotes);
-	for(int i=0;i<currentNotes.size();i++) {
-		insertNote(currentNotes.get(i));
-	}	
-	for(int i=0;i<currentCoins.size();i++) {
-		insertCoin(currentCoins.get(i));
-	}
-	clearBucket();
-	System.out.println(machineCoins);
-	System.out.println(machineNotes);
-		
-	}
-	public void insertCoin(Coin coin) {
-		int currentAmount=machineCoins.get(coin);
-		machineCoins.put(coin,currentAmount+1);
-	}
-	
-	public void insertCurrentNote(Note note) {
-		currentNotes.add(note);
-
-
-	}
-	public void insertCurrentCoin(Coin coin) {
-
-		currentCoins.add(coin);
-
-
-	}
-	
-	
-	public double getCurrentAmount() {
-		double currentAmount=0;
-	
-
-		for (int i=0;i<currentNotes.size();i++) {
-			currentAmount+=currentNotes.get(i).getValue();
-			
-		}
-		for (int i=0;i<currentCoins.size();i++) {
-			currentAmount+=currentCoins.get(i).getValue();
-			
-		}
-		return currentAmount;
-	}
-	
-	public Bucket(){
-		  fillCoins();
-		  fillNotes();
-	}
-	 private void fillCoins() {
-			machineCoins.put(Coin.TenCent,10 );
-			machineCoins.put(Coin.TwentyCent, 10);
-			machineCoins.put(Coin.FiftyCent, 10);
-			machineCoins.put(Coin.OneDollar, 10);
-	 }
-	 private void fillNotes() {
-			machineNotes.put(Note.TwentyDollar, 5);
-			machineNotes.put(Note.FiftyDollar, 5);
-	 }
 }
