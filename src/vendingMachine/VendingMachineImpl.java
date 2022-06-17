@@ -4,9 +4,7 @@ package vendingMachine;
 import java.util.Scanner;
 
 import MockData.*;
-import vendingMachine.Payment.Coin;
-import vendingMachine.Payment.Item;
-import vendingMachine.Payment.Note;
+import vendingMachine.Payment.*;
 import vendingMachine.classes.Bucket;
 import vendingMachine.classes.Keypad;
 import vendingMachine.classes.SnackSlot;
@@ -15,6 +13,7 @@ public class VendingMachineImpl implements VendingMachine {
 	Keypad keypad=new Keypad();
 	private SnackSlot snackslot =new SnackSlot();
 	private Bucket bucket =new Bucket();
+	private boolean isCardInserted=false;
 	
 	Scanner scanner =new Scanner(System.in);
 	private boolean canAcceptMoney=false;
@@ -36,59 +35,85 @@ public class VendingMachineImpl implements VendingMachine {
 	 private void vend(Item item) {
 		 displayMessage(item+ "is vending");
 		 snackslot.decreaseQuantity(selectedItemId);
-		 double change=bucket.getCurrentAmount()-snackslot.getPrice(selectedItemId);
-		 bucket.insertPurchaseMoney();
-		 displayMessage("You get back "+change);
-		 bucket.getPossibleCombinations(change);
 		 selectedItemId=null;
 		 this.canAcceptMoney=false;
 		 //clear selectedItemId, clear change, clear currentAmount, clear bucket 
 		 //getInput(scanner);
 		 
 	 }
-	 	
+	 private void makePayment(Item item) {
+		 if(!isCardInserted) {
+		double change=bucket.getCurrentAmount()-snackslot.getPrice(selectedItemId);
+		 bucket.insertPurchaseMoney();
+		 displayMessage("You get back "+change);
+		 bucket.getPossibleCombinations(change);}
+		 else {
+			 this.isCardInserted=false;
+		 }
+		 vend(item);
+		 
+	 }
 
-	 public void insertMoney(Coin coin) {
+
+	 
+	 public void acceptMoney(Card card) {
+		 keypad.pressKey(selectedItemId,InputType.PinCode);
+		 
+	 }
+
+	 public void acceptMoney(Coin coin) {
 		 if(!this.canAcceptMoney) {
 			 displayMessage("Select an item first");
 			 return;}
 		bucket.insertCurrentCoin(coin);
 		displayMessage(Double.toString(bucket.getCurrentAmount()));
-		if(bucket.getCurrentAmount()>=snackslot.getPrice(selectedItemId)) {
-			vend(snackslot.getName(selectedItemId));
+		if(bucket.getCurrentAmount()>=snackslot.getName(selectedItemId).getPrice()) {
+			makePayment(snackslot.getName(selectedItemId));
 		}
 			
-			
-
-		
-		
 		
 	}
-   public void insertMoney(Note note) {
+   public void acceptMoney(Note note) {
 	   if(!this.canAcceptMoney) {
 			 displayMessage("Select an item first");
 			 return;}
 		bucket.insertCurrentNote(note);
 		displayMessage(Double.toString(bucket.getCurrentAmount()));
 		if(bucket.getCurrentAmount()>=snackslot.getPrice(selectedItemId)) {
-			vend(snackslot.getName(selectedItemId));
+			makePayment(snackslot.getName(selectedItemId));
 		}
 			
 			
 		
 	}
-	public void displayMessage(String message) {
+	public void displayMessage(String message) {}
+	public void getInput(Scanner scanner,Card card) {
+		if(selectedItemId==null) {
+			System.out.println("Please select an item first");
+			return;
+		}
+		isCardInserted=true;
+		while(!keypad.getIsChecking()) {
+			String choice=scanner.nextLine();
+			keypad.pressKey(choice,InputType.PinCode);
+			displayMessage(keypad.getValue());
+			validateCard(keypad.getValue(),card);
 
-		System.out.println(message);
+		}
+
+
 	}
+	
 	public void getInput(Scanner scanner) {
 		while(!keypad.getIsChecking()) {
 			String choice=scanner.nextLine();
-			keypad.pressKey(choice);
+			keypad.pressKey(choice,InputType.ItemID);
 			displayMessage(keypad.getValue());
 		}
-		String id=keypad.getValue();
+		validateItemId(keypad.getValue());
 
+	}
+	private void validateItemId(String id) {
 		if(snackslot.sellsItem(id)) {
 			if(snackslot.isAvailable(id)) {
 				displayMessage(snackslot.getName(id).toString());
@@ -98,9 +123,6 @@ public class VendingMachineImpl implements VendingMachine {
 				canAcceptMoney=true;
 				selectedItemId=id;
 					
-					
-				
-			
 			}
 			else {
 				displayMessage("Item "+id+" is out of stock");
@@ -116,7 +138,36 @@ public class VendingMachineImpl implements VendingMachine {
 
 		}
 		
-		
+	}
+	private void validateCard(String pin, Card card) {
+		if(!card.isBlocked()) {
+		card.validateCard(pin);
+		if(card.isValidated()) {
+			System.out.println("Yes correct broooh");
+			System.out.println("Let's see if you have money");
+			if(card.getValue()>=snackslot.getName(selectedItemId).getPrice()) {
+				System.out.println("seems youre rich");
+				makePayment(snackslot.getName(selectedItemId));
+			}
+			else {
+				System.out.println("ohh youre puur");
+
+			}
+			
+		}
+		else {
+			System.out.println("Nope Wrong tryyy again");
+			keypad.clearValue();
+			System.out.println(card.isBlocked);
+			System.out.println(card.wrongTries);
+			keypad.setIsChecking(false);
+			getInput(scanner,card);
+			//getInput( scanner,card);
+
+		}
+		}
+		//TODO:Throw exception
+		else {System.out.println("So happy youre blocked now ?");}
 	}
 public boolean checkMoneyIsValid(int amount) {
 		return true;

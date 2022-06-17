@@ -1,12 +1,9 @@
 package vendingMachine;
 
-import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 
-
+import vendingMachine.Payment.Card;
 import vendingMachine.Payment.Coin;
-import vendingMachine.Payment.Item;
 import vendingMachine.Payment.Note;
 import User.User;
 
@@ -15,54 +12,55 @@ public class Main {
 	
 		
 		VendingMachineImpl machine =new VendingMachineImpl();
-		User user = new User();
+		User user = new User("Abdullah",new Card("1234",200.0));
+		//user.set
 		boolean hasExited=false;
 
 		while (!hasExited){
-		System.out.println("Please choose the action the user wants to perform");
 		Scanner scanner =new Scanner(System.in);
 		System.out.println("Please Choose what do you want to do \n\n");
 		System.out.println("1. look at items ");
-		System.out.println("2. look at display");
-		System.out.println("3. money");
-		System.out.println("4. Sect Items");
-		System.out.println("5.Bye");
+		System.out.println("2. insert Card");
+		System.out.println("3. put money");
+		System.out.println("4. Select Items");
+		
+		System.out.println("5. Exit");
 
 		int choice=scanner.nextInt();
 
 		switch(choice) {
 		case 1:
-			user.showatItems(machine.getSnackSlot().getItems());
+			user.showItems(machine.getSnackSlot().getItems());
 			break;
 		case 2:
+			machine.getInput(scanner,user.getCard());
 			break;
 		case 3:
-			while (machine.getCanAcceptMoney()&&!hasExited) {
+			do {
 				int choice2=user.insertMoney(scanner);
 
 				switch(choice2) {
 				case 1:
-					machine.insertMoney(Coin.TenCent);
+					machine.acceptMoney(Coin.TenCent);
 					break;
 				case 2:
-					machine.insertMoney(Coin.TwentyCent);
+					machine.acceptMoney(Coin.TwentyCent);
 					break;
 				case 3:
-					machine.insertMoney(Coin.FiftyCent);
+					machine.acceptMoney(Coin.FiftyCent);
 					break;
 				case 4:
-					machine.insertMoney(Coin.OneDollar);
+					machine.acceptMoney(Coin.OneDollar);
 					break;
 				case 5:
-					machine.insertMoney(Note.TwentyDollar);
+					machine.acceptMoney(Note.TwentyDollar);
 					break;
-				case 6:
-					machine.insertMoney(Note.FiftyDollar);
-				break;
+				case 6:  
+					machine.acceptMoney(Note.FiftyDollar);
+				case 7:break;
 					
 				}
-				
-			}
+			}while (machine.getCanAcceptMoney());
 			break;
 		case 4:
 			machine.getInput(scanner);
@@ -83,6 +81,3 @@ public class Main {
 			
 		}
 
-		
-		
-	

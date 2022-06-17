@@ -5,13 +5,19 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import vendingMachine.Product;
-import vendingMachine.Payment.Item;
-
+import vendingMachine.Payment.*;
 public class User {
 String name;
+Card card;
 
-public void showatItems(TreeMap<String,Product> machineItems){
-	System.out.println("Please Choose your snack\n\n");
+public User(String name,Card card) {
+	this.name = name;
+	this.card = card;
+}
+public Card getCard() {
+	return card;
+}
+public void showItems(TreeMap<String,Product> machineItems){
 
 	int i=0;
 	for (Map.Entry<String, Product> entry : machineItems.entrySet()) {

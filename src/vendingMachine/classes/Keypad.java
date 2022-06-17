@@ -2,6 +2,8 @@ package vendingMachine.classes;
 
 import java.util.HashMap;
 
+import vendingMachine.Payment.InputType;
+
 public class Keypad {
 private String value="";
 private boolean isChecking=false;
@@ -12,8 +14,9 @@ public boolean getIsChecking() {
 public void setIsChecking(boolean checking) {
 	this.isChecking= checking;
 }
-private boolean isValidLength(){
-	return value.length()==2;
+private boolean isValidLength(InputType type){
+	int length=type.getLength();
+	return value.length()==length;
 }
 
 final private  HashMap<String, String> keys = new HashMap<String, String>();
@@ -26,6 +29,11 @@ private void initialize() {
 	keys.put("3", "3");
 	keys.put("4", "4");
 	keys.put("5", "5");
+	keys.put("6", "6");
+	keys.put("7", "7");
+	keys.put("8", "8");
+	keys.put("9", "9");
+	keys.put("0", "0");
 	keys.put("A", "A");
 	keys.put("B", "B");
 	keys.put("C", "C");
@@ -51,10 +59,11 @@ public void clearValue() {
 private void setValue(String value) {
 	this.value = value;
 }
-public void pressKey(String input) {
-	
+public void pressKey(String input,InputType type) {
+	int maximiumLength=type.getLength();
+
 	if(keys.containsKey(input)) {
-	if(value.length()==2&&!input.equals("delete")&&!input.equals("Ok")&&!input.equals("clear"))
+	if(value.length()==maximiumLength&&!input.equals("delete")&&!input.equals("clear"))
 		return ;//dont allow user to press more then 2 values
 	if(input.equals("clear"))
 	{
@@ -67,11 +76,11 @@ public void pressKey(String input) {
 		}
 	}
 	
-	else if(!input.equals("Ok")){//all numbers but OK
-		if(value.length()>2) return ;
+	else {//all numbers but OK
+		if(value.length()>maximiumLength) return ;
 		setValue(value+input);
 	}
-		if(isValidLength()) {
+		if(isValidLength(type)) {
 			setIsChecking(true);
 
 		}
