@@ -43,6 +43,11 @@ public Keypad(){
 public String getValue() {
 	return value;
 }
+
+public void clearValue() {
+	setValue("");
+}
+
 private void setValue(String value) {
 	this.value = value;
 }
@@ -53,8 +58,7 @@ public void pressKey(String input) {
 		return ;//dont allow user to press more then 2 values
 	if(input.equals("clear"))
 	{
-		setValue("");
-	}
+		clearValue();	}
 	else if (input.equals("delete")) {
 		if (value.isEmpty())
 			return ;

@@ -18,9 +18,9 @@ public class VendingMachineImpl implements VendingMachine {
 	
 	Scanner scanner =new Scanner(System.in);
 	private boolean canAcceptMoney=false;
-	public boolean willVend=false;
 	private String selectedItemId=null;
-
+	
+	
 	VendingMachineImpl(){
 		initialize();
 	}
@@ -30,15 +30,19 @@ public class VendingMachineImpl implements VendingMachine {
 		
 		}
 	
-	 
+	 public boolean getCanAcceptMoney() {
+		 return canAcceptMoney;
+	 }
 	 private void vend(Item item) {
 		 displayMessage(item+ "is vending");
 		 snackslot.decreaseQuantity(selectedItemId);
 		 double change=bucket.getCurrentAmount()-snackslot.getPrice(selectedItemId);
 		 bucket.insertPurchaseMoney();
 		 displayMessage("You get back "+change);
-		 bucket.getPossibleCombinations(change);;
+		 bucket.getPossibleCombinations(change);
 		 selectedItemId=null;
+		 this.canAcceptMoney=false;
+		 //clear selectedItemId, clear change, clear currentAmount, clear bucket 
 		 //getInput(scanner);
 		 
 	 }
@@ -85,11 +89,12 @@ public class VendingMachineImpl implements VendingMachine {
 		}
 		String id=keypad.getValue();
 
-		if(snackslot.sellsItem(keypad.getValue())) {
-			if(snackslot.isAvailable(keypad.getValue())) {
+		if(snackslot.sellsItem(id)) {
+			if(snackslot.isAvailable(id)) {
 				displayMessage(snackslot.getName(id).toString());
 				displayMessage(snackslot.getPrice(id)+"$");
 				//ask user for money
+				keypad.clearValue();
 				canAcceptMoney=true;
 				selectedItemId=id;
 					
