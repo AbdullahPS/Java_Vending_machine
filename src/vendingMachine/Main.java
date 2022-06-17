@@ -23,7 +23,6 @@ public class Main {
 		System.out.println("2. insert Card");
 		System.out.println("3. put money");
 		System.out.println("4. Select Items");
-		
 		System.out.println("5. Exit");
 
 		int choice=scanner.nextInt();

@@ -13,8 +13,7 @@ public class VendingMachineImpl implements VendingMachine {
 	Keypad keypad=new Keypad();
 	private SnackSlot snackslot =new SnackSlot();
 	private Bucket bucket =new Bucket();
-	private boolean isCardInserted=false;
-	
+	private boolean isCardInserted=false;	
 	Scanner scanner =new Scanner(System.in);
 	private boolean canAcceptMoney=false;
 	private String selectedItemId=null;
@@ -28,6 +27,14 @@ public class VendingMachineImpl implements VendingMachine {
 		
 		
 		}
+	  public void onCancelPress() {
+		  selectedItemId=null;
+		  isCardInserted=false;
+		  bucket.clearBucket();
+		  keypad.clearValue();
+	
+		  
+	  }
 	
 	 public boolean getCanAcceptMoney() {
 		 return canAcceptMoney;
@@ -102,6 +109,10 @@ public class VendingMachineImpl implements VendingMachine {
 		isCardInserted=true;
 		System.out.println("Please enter your Pin");
 		while(!keypad.getIsChecking()) {
+			if(keypad.getValue().equals("cancel")) {
+				onCancelPress();
+				return;
+			}
 			String choice=scanner.nextLine();
 			keypad.pressKey(choice,InputType.PinCode);
 			displayMessage(keypad.getValue());
@@ -118,6 +129,11 @@ public class VendingMachineImpl implements VendingMachine {
 	public void getInput(Scanner scanner) {
 		displayMessage("Please enter the item ID");
 		while(!keypad.getIsChecking()) {
+			if(keypad.getValue().equals("cancel")) {
+				onCancelPress();
+				return;
+			}
+			
 			String choice=scanner.nextLine();
 			keypad.pressKey(choice,InputType.ItemID);
 			displayMessage(keypad.getValue());

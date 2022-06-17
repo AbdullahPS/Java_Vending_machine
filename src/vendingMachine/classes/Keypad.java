@@ -41,6 +41,7 @@ private void initialize() {
 	keys.put("E", "E");
 	keys.put("clear", "clear");
 	keys.put("delete", "delete");
+	keys.put("cancel", "cancel");
 	}
 }
 public Keypad(){
@@ -59,12 +60,14 @@ public void clearValue() {
 private void setValue(String value) {
 	this.value = value;
 }
+
 public void pressKey(String input,InputType type) {
 	int maximiumLength=type.getLength();
 
 	if(keys.containsKey(input)) {
+	if(input.equals("cancel"))setValue("cancel");
 	if(value.length()==maximiumLength&&!input.equals("delete")&&!input.equals("clear"))
-		return ;//dont allow user to press more then 2 values
+		return ;//dont allow user to press more then 2 or 4 values
 	if(input.equals("clear"))
 	{
 		clearValue();	}

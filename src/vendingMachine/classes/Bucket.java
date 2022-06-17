@@ -18,7 +18,10 @@ public class Bucket {
 	private ArrayList<Note> currentNotes =new ArrayList<Note>();
 	private ArrayList<Coin> currentCoins=new ArrayList<Coin>();
 
-	
+	public void clearBucket() {
+		currentNotes.clear();
+		currentCoins.clear();
+	}
 	public void giveNote(Note note) {
 		int currentAmount=machineNotes.get(note);
 		machineNotes.put(note,currentAmount-1);
@@ -90,8 +93,7 @@ public class Bucket {
 	for(int i=0;i<currentCoins.size();i++) {
 		insertCoin(currentCoins.get(i));
 	}
-	currentNotes.clear();
-	currentCoins.clear();
+	clearBucket();
 	System.out.println(machineCoins);
 	System.out.println(machineNotes);
 		
