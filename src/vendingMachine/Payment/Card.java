@@ -27,9 +27,11 @@ void dropAmount(double price){
 public void validateCard(String pin){
 	if(!isBlocked) {
 	if(pinCode.equals(pin)) {
-		setValidated();
+		setValidated(true);
 	}
-	else {wrongTries++;}
+	else {
+		setValidated(false);
+		wrongTries++;}
 	if(wrongTries==3) {
 		isBlocked=true;
 	}
@@ -45,8 +47,8 @@ public boolean isValidated() {
 	return validated;
 }
 
-private void setValidated() {
-	this.validated = true;
+private void setValidated(boolean value) {
+	this.validated = value;
 }
 
 public double getValue() {

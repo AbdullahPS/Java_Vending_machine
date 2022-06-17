@@ -51,6 +51,7 @@ public class VendingMachineImpl implements VendingMachine {
 			 this.isCardInserted=false;
 		 }
 		 vend(item);
+		 keypad.setIsChecking(false);
 		 
 	 }
 
@@ -65,6 +66,9 @@ public class VendingMachineImpl implements VendingMachine {
 		 if(!this.canAcceptMoney) {
 			 displayMessage("Select an item first");
 			 return;}
+		 if(isCardInserted) {
+			 displayMessage("You are currently inside a bank session, cancel it first");
+		 	}
 		bucket.insertCurrentCoin(coin);
 		displayMessage(Double.toString(bucket.getCurrentAmount()));
 		if(bucket.getCurrentAmount()>=snackslot.getName(selectedItemId).getPrice()) {
@@ -86,25 +90,33 @@ public class VendingMachineImpl implements VendingMachine {
 			
 		
 	}
-	public void displayMessage(String message) {}
+	public void displayMessage(String message) {
+		System.out.println(message);
+	}
+	
 	public void getInput(Scanner scanner,Card card) {
 		if(selectedItemId==null) {
 			System.out.println("Please select an item first");
 			return;
 		}
 		isCardInserted=true;
+		System.out.println("Please enter your Pin");
 		while(!keypad.getIsChecking()) {
 			String choice=scanner.nextLine();
 			keypad.pressKey(choice,InputType.PinCode);
 			displayMessage(keypad.getValue());
-			validateCard(keypad.getValue(),card);
 
 		}
+		validateCard(keypad.getValue(),card);
+		keypad.clearValue();
+
+
 
 
 	}
 	
 	public void getInput(Scanner scanner) {
+		displayMessage("Please enter the item ID");
 		while(!keypad.getIsChecking()) {
 			String choice=scanner.nextLine();
 			keypad.pressKey(choice,InputType.ItemID);
@@ -122,6 +134,7 @@ public class VendingMachineImpl implements VendingMachine {
 				keypad.clearValue();
 				canAcceptMoney=true;
 				selectedItemId=id;
+				keypad.setIsChecking(false);
 					
 			}
 			else {
@@ -165,6 +178,8 @@ public class VendingMachineImpl implements VendingMachine {
 			//getInput( scanner,card);
 
 		}
+
+
 		}
 		//TODO:Throw exception
 		else {System.out.println("So happy youre blocked now ?");}
