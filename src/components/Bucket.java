@@ -8,8 +8,9 @@ import java.util.Map.Entry;
 
 import payment.Coin;
 import payment.Note;
-
 import java.util.TreeMap;
+
+import MockData.InitialProducts;
 
 public class Bucket {
 
@@ -24,18 +25,17 @@ public class Bucket {
 		  fillNotes();
 	}
 	public void clearBucket() {
-		currentNotes.clear();
 		currentCoins.clear();
 	}
 	private void fillCoins() {
-			machineCoins.put(Coin.TenCent,10 );
-			machineCoins.put(Coin.TwentyCent, 10);
-			machineCoins.put(Coin.FiftyCent, 10);
-			machineCoins.put(Coin.OneDollar, 10);
+			machineCoins.put(Coin.TenCent,InitialProducts.MockCoins[0] );
+			machineCoins.put(Coin.TwentyCent, InitialProducts.MockCoins[1] );
+			machineCoins.put(Coin.FiftyCent, InitialProducts.MockCoins[2] );
+			machineCoins.put(Coin.OneDollar,InitialProducts.MockCoins[3] );
 	 }
 	private void fillNotes() {
-			machineNotes.put(Note.TwentyDollar, 5);
-			machineNotes.put(Note.FiftyDollar, 5);
+			machineNotes.put(Note.TwentyDollar, InitialProducts.MockNotes[0]);
+			machineNotes.put(Note.FiftyDollar, InitialProducts.MockCoins[1]);
 	 }
 	public double getCurrentAmount() {
 		double currentAmount=0;

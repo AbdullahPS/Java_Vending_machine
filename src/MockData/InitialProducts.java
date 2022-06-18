@@ -36,7 +36,7 @@ public class InitialProducts {
 };
 	static Random rand = new Random();
 
-	public final static int coins[]= {
+	public final static int MockCoins[]= {
 			rand.nextInt(100-50) + 50,
 			rand.nextInt(100-50) + 50,
 			rand.nextInt(100-50) + 50,
@@ -44,7 +44,7 @@ public class InitialProducts {
 
 			
 	};
-	public final static int notes[]= {
+	public final static int MockNotes[]= {
 			rand.nextInt(100-50) + 50,
 			rand.nextInt(100-50) + 50,
 

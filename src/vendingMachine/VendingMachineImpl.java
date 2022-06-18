@@ -64,6 +64,7 @@ public class VendingMachineImpl implements VendingMachine {
 	
 	
 		}
+	
 
 
 	 public boolean getCanAcceptMoney() {
@@ -152,7 +153,8 @@ public class VendingMachineImpl implements VendingMachine {
 	private void makePayment(Item item) {
 		 if(!isCardInserted) {
 		double change=bucket.getCurrentAmount()-snackslot.getPrice(selectedItemId);
-		 bucket.insertPurchaseMoney();
+		change=Double.parseDouble(String.format("%.2f", change));
+		bucket.insertPurchaseMoney();
 		 display.displayMessage("You get back "+change);
 		 bucket.getPossibleCombinations(change);}
 		 else {
