@@ -1,3 +1,3 @@
 # Java_Vending_machine
 A simple vending machine implementation using Java language
-![VendingMachine umlcd](https://user-images.githubusercontent.com/59699889/174450827-cd88adf9-a8df-4ccc-9de9-cb90dd2b1f62.png)
+![VendingMachine UMLpng](https://user-images.githubusercontent.com/59699889/174459128-62dd5051-eac4-4c8a-823a-de7fcce5c431.png)
