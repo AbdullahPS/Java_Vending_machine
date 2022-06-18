@@ -4,8 +4,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import payment.*;
 import vendingMachine.Product;
-import vendingMachine.Payment.*;
 public class User {
 String name;
 Card card;

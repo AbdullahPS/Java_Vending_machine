@@ -1,7 +1,8 @@
 package MockData;
 
-import vendingMachine.Payment.Item;
 import java.util.Random;
+
+import payment.Item;
 
 
 public class InitialProducts {
@@ -36,15 +37,17 @@ public class InitialProducts {
 	static Random rand = new Random();
 
 	public final static int coins[]= {
-			rand.nextInt(10-5) + 5,
-			rand.nextInt(10-5) + 5,
-			rand.nextInt(10-5) + 5,
-			rand.nextInt(10-5) + 5,
+			rand.nextInt(100-50) + 50,
+			rand.nextInt(100-50) + 50,
+			rand.nextInt(100-50) + 50,
+			rand.nextInt(100-50) + 50,
+
 			
 	};
 	public final static int notes[]= {
-			rand.nextInt(10-5) + 5,
-			rand.nextInt(10-5) + 5,
+			rand.nextInt(100-50) + 50,
+			rand.nextInt(100-50) + 50,
+
 	
 			
 	};

@@ -1,4 +1,4 @@
-package vendingMachine.Payment;
+package payment;
 
 public class Card implements Payment {
 private String pinCode;
@@ -40,6 +40,10 @@ private void setValidated(boolean value) {
 	this.validated = value;
 }
 
+public void withDrawMoney(double amount) {
+	if(validated)
+	this.value -= amount;
+}
 public void validateCard(String pin){
 	if(!isBlocked) {
 	if(pinCode.equals(pin)) {

@@ -1,11 +1,17 @@
 package vendingMachine;
 
+import java.util.Scanner;
+
+import payment.Card;
+import payment.Coin;
+import payment.Note;
+
+
 public interface VendingMachine {
-	boolean checkMoneyIsValid(int amount);
-	void displayMessage(String message);
-	void returnMoney();
-	void returnProduct();
-	
-	
+void getInput(Scanner scanner);
+void onCancelPress();
+void acceptMoney(Coin Coin);
+void acceptMoney(Note note);
+void acceptMoney(Card card);
 
 }

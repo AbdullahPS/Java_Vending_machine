@@ -3,22 +3,28 @@ package vendingMachine;
 
 import java.util.Scanner;
 
+import Exceptions.CardIsBlockedException;
+import Exceptions.ItemNotSupportedException;
+import Exceptions.InsufficientBalanceException;
+import Exceptions.ItemOutOfStockException;
 import MockData.InitialProducts;
-import vendingMachine.Payment.Card;
-import vendingMachine.Payment.Coin;
-import vendingMachine.Payment.InputType;
-import vendingMachine.Payment.Item;
-import vendingMachine.Payment.Note;
-import vendingMachine.classes.Bucket;
-import vendingMachine.classes.Keypad;
-import vendingMachine.classes.SnackSlot;
+import components.Bucket;
+import components.Display;
+import components.Keypad;
+import components.SnackSlot;
+import payment.Card;
+import payment.Coin;
+import payment.InputType;
+import payment.Item;
+import payment.Note;
 
 public class VendingMachineImpl implements VendingMachine {
-	Keypad keypad=new Keypad();
+	private Keypad keypad=new Keypad();
 	private SnackSlot snackslot =new SnackSlot();
 	private Bucket bucket =new Bucket();
+	Display display =new Display(1);
 	private boolean isCardInserted=false;
-	Scanner scanner =new Scanner(System.in);
+	private Scanner scanner =new Scanner(System.in);
 	private boolean canAcceptMoney=false;
 	private String selectedItemId=null;
 
@@ -26,32 +32,31 @@ public class VendingMachineImpl implements VendingMachine {
 	VendingMachineImpl(){
 		initialize();
 	}
+	@Override
 	  public void acceptMoney(Card card) {
 		 keypad.pressKey(selectedItemId,InputType.PinCode);
 
 	 }
+	@Override
 	  public void acceptMoney(Coin coin) {
 		 if(!this.canAcceptMoney) {
-			 displayMessage("Select an item first");
+			 display.displayMessage("Select an item first");
 			 return;}
-		 if(isCardInserted) {
-			 displayMessage("You are currently inside a bank session, cancel it first");
-		 	}
 		bucket.insertCurrentCoin(coin);
-		displayMessage(Double.toString(bucket.getCurrentAmount()));
+		display.displayMessage(Double.toString(bucket.getCurrentAmount()));
 		if(bucket.getCurrentAmount()>=snackslot.getName(selectedItemId).getPrice()) {
 			makePayment(snackslot.getName(selectedItemId));
 		}
 
 
 	}
-
+	@Override
 	 public void acceptMoney(Note note) {
 		   if(!this.canAcceptMoney) {
-				 displayMessage("Select an item first");
+			   display.displayMessage("Select an item first");
 				 return;}
 			bucket.insertCurrentNote(note);
-			displayMessage(Double.toString(bucket.getCurrentAmount()));
+			display.displayMessage(Double.toString(bucket.getCurrentAmount()));
 			if(bucket.getCurrentAmount()>=snackslot.getPrice(selectedItemId)) {
 				makePayment(snackslot.getName(selectedItemId));
 			}
@@ -59,24 +64,14 @@ public class VendingMachineImpl implements VendingMachine {
 	
 	
 		}
-	 @Override
-	public boolean checkMoneyIsValid(int amount) {
-			return true;
-	
-		}
-	 @Override
-	public void displayMessage(String message) {
-		System.out.println(message);
-	}
-
 
 
 	 public boolean getCanAcceptMoney() {
 		 return canAcceptMoney;
 	 }
-
+	 @Override
 	 public void getInput(Scanner scanner) {
-		displayMessage("Please enter the item ID");
+		display.displayMessage("Please enter the item ID");
 		while(!keypad.getIsChecking()) {
 			if(keypad.getValue().equals("cancel")) {
 				onCancelPress();
@@ -85,18 +80,35 @@ public class VendingMachineImpl implements VendingMachine {
 
 			String choice=scanner.nextLine();
 			keypad.pressKey(choice,InputType.ItemID);
-			displayMessage(keypad.getValue());
+			display.displayMessage(keypad.getValue());
 		}
-		validateItemId(keypad.getValue());
-
-	}
-   public void getInput(Scanner scanner,Card card) {
+		
+		try {
+			validateItemId(keypad.getValue());
+		} catch (ItemOutOfStockException e) {
+			display.displayMessage("Exception occured" +  e);
+			keypad.setIsChecking(false);
+			getInput(scanner);
+		}
+		catch(ItemNotSupportedException e)	{
+			display.displayMessage("Exception occured" +  e);
+			keypad.setIsChecking(false);
+			getInput(scanner);
+		
+		}
+	 }
+	
+   public void getInput(Scanner scanner,Card card)  {
 	if(selectedItemId==null) {
-		System.out.println("Please select an item first");
+		display.displayMessage("Please select an item first");
+		return;
+	}
+	if(card.isBlocked) {
+		display.displayMessage("You cant use this card please contact your bank");
 		return;
 	}
 	isCardInserted=true;
-	System.out.println("Please enter your Pin");
+	display.displayMessage("Please enter your Pin");
 	while(!keypad.getIsChecking()) {
 		if(keypad.getValue().equals("cancel")) {
 			onCancelPress();
@@ -104,39 +116,54 @@ public class VendingMachineImpl implements VendingMachine {
 		}
 		String choice=scanner.nextLine();
 		keypad.pressKey(choice,InputType.PinCode);
-		displayMessage(keypad.getValue());
+		display.displayMessage(keypad.getValue());
 
 	}
-	validateCard(keypad.getValue(),card);
+	try {
+		validateCard(keypad.getValue(),card);
+	} catch (CardIsBlockedException e) {
+		display.displayMessage("Exception occured" +  e);
+		 this.isCardInserted=false;
+		 selectedItemId=null;
+		 this.canAcceptMoney=false;
+		 keypad.setIsChecking(false);
+		
+	} catch (InsufficientBalanceException e) {
+		display.displayMessage("Exception occured" +  e);
+		 this.isCardInserted=false;
+		 selectedItemId=null;
+		 this.canAcceptMoney=false;
+		 keypad.setIsChecking(false);
+
+
+	}
 	keypad.clearValue();
 
 
 
 
 }
-	public SnackSlot getSnackSlot() {
-		return this.snackslot;
-	}
 
 	private void initialize() {
 		  snackslot.initialize(InitialProducts.items);
 
 
 		}
-
 	private void makePayment(Item item) {
 		 if(!isCardInserted) {
 		double change=bucket.getCurrentAmount()-snackslot.getPrice(selectedItemId);
 		 bucket.insertPurchaseMoney();
-		 displayMessage("You get back "+change);
+		 display.displayMessage("You get back "+change);
 		 bucket.getPossibleCombinations(change);}
 		 else {
+			 display.displayMessage("Card Payment completed succesfully");
 			 this.isCardInserted=false;
 		 }
 		 vend(item);
 		 keypad.setIsChecking(false);
 
 	 }
+	@Override
 	public void onCancelPress() {
 		  selectedItemId=null;
 		  isCardInserted=false;
@@ -145,51 +172,44 @@ public class VendingMachineImpl implements VendingMachine {
 
 
 	  }
-	@Override
-	public void returnMoney() {
 
-	}
-@Override
-public void returnProduct() {
 
-}
-	private void validateCard(String pin, Card card) {
+	private void validateCard(String pin, Card card) throws CardIsBlockedException,InsufficientBalanceException{
 		if(!card.isBlocked()) {
 		card.validateCard(pin);
 		if(card.isValidated()) {
-			System.out.println("Yes correct broooh");
-			System.out.println("Let's see if you have money");
+			display.displayMessage("Succesfullty accepted Card");
+			display.displayMessage("Checking for sufficient balance");
 			if(card.getValue()>=snackslot.getName(selectedItemId).getPrice()) {
-				System.out.println("seems youre rich");
+				card.withDrawMoney(snackslot.getName(selectedItemId).getPrice());
 				makePayment(snackslot.getName(selectedItemId));
 			}
 			else {
-				System.out.println("ohh youre puur");
-
+				throw new InsufficientBalanceException("Not enough money in credit card");
+				
 			}
 
 		}
 		else {
-			System.out.println("Nope Wrong tryyy again");
+			display.displayMessage("Wrong PinNumber try again");
 			keypad.clearValue();
 			System.out.println(card.isBlocked);
 			System.out.println(card.wrongTries);
 			keypad.setIsChecking(false);
 			getInput(scanner,card);
-			//getInput( scanner,card);
 
 		}
 
 
 		}
-		//TODO:Throw exception
-		else {System.out.println("So happy youre blocked now ?");}
-	}
-	private void validateItemId(String id) {
+		else {
+			throw new CardIsBlockedException("You have entered your Pin too many times wrong. This Card cant long be used");
+	}}
+	private void validateItemId(String id)throws ItemOutOfStockException,ItemNotSupportedException{
 		if(snackslot.sellsItem(id)) {
 			if(snackslot.isAvailable(id)) {
-				displayMessage(snackslot.getName(id).toString());
-				displayMessage(snackslot.getPrice(id)+"$");
+				display.displayMessage(snackslot.getName(id).toString());
+				display.displayMessage(snackslot.getPrice(id)+"$");
 				//ask user for money
 				keypad.clearValue();
 				canAcceptMoney=true;
@@ -198,22 +218,21 @@ public void returnProduct() {
 
 			}
 			else {
-				displayMessage("Item "+id+" is out of stock");
-				keypad.setIsChecking(false);
-				getInput(scanner);
+				throw new ItemOutOfStockException("Item "+snackslot.getName(id)+" is out of stock");
+			
 
 			}
 		}
-		else {//machine does not sell item throw exception
-			System.out.println("bro, we dont sell item "+id);
-			keypad.setIsChecking(false);
-			getInput(scanner);
+		else {
+			throw new ItemNotSupportedException("bro, we dont sell item "+id);
+
+		
 
 		}
 
 	}
 	private void vend(Item item) {
-		 displayMessage(item+ "is vending");
+		display.displayMessage(item+ "is vending");
 		 snackslot.decreaseQuantity(selectedItemId);
 		 selectedItemId=null;
 		 this.canAcceptMoney=false;
@@ -221,6 +240,10 @@ public void returnProduct() {
 		 //getInput(scanner);
 
 	 }
+	public SnackSlot getSnackSlot() {
+		return this.snackslot;
+	}
+
 
 
 }

@@ -1,12 +1,11 @@
-package vendingMachine.Payment;
+package payment;
 
 public enum Note implements Payment {
 	
 	TwentyDollar(20.0),
 	FiftyDollar(50.0);
-	
- private final double value;
  
+private double value;
 Note(double value){
 		this.value=value;
 		

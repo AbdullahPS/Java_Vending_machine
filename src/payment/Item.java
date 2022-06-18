@@ -1,4 +1,4 @@
-package vendingMachine.Payment;
+package payment;
 
 public enum Item {
 	Mars(2),
@@ -26,11 +26,7 @@ public enum Item {
 	Toffifee(4),
 	Corny(1),
 	Bueno(1);
-	
-	
-	
-	
-	private final double price;
+	private double price;
 	Item(double price){
 		this.price=price;
 	

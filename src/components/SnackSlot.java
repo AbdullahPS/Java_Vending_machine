@@ -1,10 +1,10 @@
 
-package vendingMachine.classes;
+package components;
 
 import java.util.TreeMap;
 
+import payment.Item;
 import vendingMachine.Product;
-import vendingMachine.Payment.Item;
 
 public class SnackSlot {
 	
@@ -35,6 +35,7 @@ public class SnackSlot {
 	}
 
 	public void initialize(Item[] initItems) {
+		int itemIndex=0;
 		if(items.isEmpty())
 		for(int i=1;i<6;i++) {
 			for(int j=0;j<5;j++) {
@@ -58,7 +59,8 @@ public class SnackSlot {
 				    break;
 
 				}
-				items.put(key, new Product(initItems[j+i],10,key));
+				items.put(key, new Product(initItems[itemIndex],10,key));
+				itemIndex++;
 				
 			}
 			

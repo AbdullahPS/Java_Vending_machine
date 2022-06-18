@@ -1,8 +1,8 @@
-package vendingMachine.classes;
+package components;
 
 import java.util.HashMap;
 
-import vendingMachine.Payment.InputType;
+import payment.InputType;
 
 public class Keypad {
 private String value="";

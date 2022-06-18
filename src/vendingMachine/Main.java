@@ -3,16 +3,16 @@ package vendingMachine;
 import java.util.Scanner;
 
 import User.User;
-import vendingMachine.Payment.Card;
-import vendingMachine.Payment.Coin;
-import vendingMachine.Payment.Note;
+import payment.Card;
+import payment.Coin;
+import payment.Note;
 
 public class Main {
 	public static void main (String args[]) {
 
 
 		VendingMachineImpl machine =new VendingMachineImpl();
-		User user = new User("Abdullah",new Card("1234",200.0));
+		User user = new User("Abdullah",new Card("1234",0.5));
 		//user.set
 		boolean hasExited=false;
 

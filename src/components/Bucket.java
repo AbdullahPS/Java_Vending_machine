@@ -1,14 +1,15 @@
-package vendingMachine.classes;
+package components;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
-import vendingMachine.Payment.Coin;
-import vendingMachine.Payment.Note;
+import payment.Coin;
+import payment.Note;
+
+import java.util.TreeMap;
 
 public class Bucket {
 
@@ -112,8 +113,8 @@ public class Bucket {
 
 	}
 	 public void insertPurchaseMoney() {
-		System.out.println(machineCoins);
-		System.out.println(machineNotes);
+		System.out.println("Coins before inserting were: "+machineCoins);
+		System.out.println("Notes before inserting were: "+machineNotes);
 	for(int i=0;i<currentNotes.size();i++) {
 		insertNote(currentNotes.get(i));
 	}	
@@ -121,13 +122,13 @@ public class Bucket {
 		insertCoin(currentCoins.get(i));
 	}
 	clearBucket();
-	System.out.println(machineCoins);
-	System.out.println(machineNotes);
+	System.out.println("Coins after inserting were: "+machineCoins);
+	System.out.println("Notes after inserting were: "+machineNotes);
 		
 	}
 	 private void withDraw(Map <Note,Integer >noteQuantities,Map <Coin,Integer >coinQuantities){
-		System.out.println(machineNotes);
-		System.out.println(machineCoins);
+		 System.out.println("Coins before giving user change were: "+machineCoins);
+		 System.out.println("Notes before giving user change: "+machineNotes);
 		for (Entry<Coin, Integer> entry : coinQuantities.entrySet()) {
 			Coin coin=entry.getKey();
 			int amount=entry.getValue();
@@ -142,7 +143,7 @@ public class Bucket {
 				for(int i=0;i<amount;i++)
 				giveNote(note);
 		}
-		System.out.println(machineNotes);
-		System.out.println(machineCoins);
+		 System.out.println("Coins after giving user change were: "+machineCoins);
+		 System.out.println("Notes after giving user change: "+machineNotes);
 		}
 }

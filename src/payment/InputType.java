@@ -1,9 +1,9 @@
-package vendingMachine.Payment;
+package payment;
 
 public enum InputType {
 	PinCode(4),
 	ItemID(2);
-	private final int length;
+	private int length;
 	InputType(int length){
 		this.length=length;
 	

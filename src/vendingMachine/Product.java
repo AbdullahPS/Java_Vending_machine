@@ -1,6 +1,6 @@
 package vendingMachine;
 
-import vendingMachine.Payment.Item;
+import payment.Item;
 
 public class Product {
 	private Item item;
@@ -10,6 +10,7 @@ public class Product {
 	
 	public Product(Item item,int quantity,String id){
 		this.item=item;
+		this.id=id;
 		
 		this.quantity=quantity;
 		this.id=id;
