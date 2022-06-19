@@ -8,6 +8,7 @@ import Exceptions.ItemNotSupportedException;
 import Exceptions.InsufficientBalanceException;
 import Exceptions.ItemOutOfStockException;
 import MockData.InitialProducts;
+import MockData.Item;
 import components.Bucket;
 import components.Display;
 import components.Keypad;
@@ -15,7 +16,6 @@ import components.SnackSlot;
 import payment.Card;
 import payment.Coin;
 import payment.InputType;
-import payment.Item;
 import payment.Note;
 
 public class VendingMachineImpl implements VendingMachine {
@@ -38,7 +38,7 @@ public class VendingMachineImpl implements VendingMachine {
 
 	 }
 	@Override
-	  public void acceptMoney(Coin coin) {
+	public void acceptMoney(Coin coin) {
 		 if(!this.canAcceptMoney) {
 			 display.displayMessage("Select an item first");
 			 return;}
@@ -105,8 +105,7 @@ public class VendingMachineImpl implements VendingMachine {
 		return;
 	}
 	if(card.isBlocked) {
-		display.displayMessage("You cant use this card please contact your bank");
-		return;
+		
 	}
 	isCardInserted=true;
 	display.displayMessage("Please enter your Pin");
@@ -169,12 +168,16 @@ public class VendingMachineImpl implements VendingMachine {
 	public void onCancelPress() {
 		  selectedItemId=null;
 		  isCardInserted=false;
+		  canAcceptMoney=false;
 		  bucket.clearBucket();
 		  keypad.clearValue();
+		  
 
 
 	  }
-
+	public void onCancel(){
+		
+	}
 
 	private void validateCard(String pin, Card card) throws CardIsBlockedException,InsufficientBalanceException{
 		if(!card.isBlocked()) {

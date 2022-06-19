@@ -25,7 +25,9 @@ public class Main {
 		System.out.println("4. Select Items");
 		System.out.println("5. Exit");
 
+		try {
 		int choice=scanner.nextInt();
+	
 
 		switch(choice) {
 		case 1:
@@ -56,7 +58,13 @@ public class Main {
 					break;
 				case 6:
 					machine.acceptMoney(Note.FiftyDollar);
-				case 7:break;
+					break;
+				case 7:
+					machine.onCancelPress();
+					break;
+				default :
+					System.out.println("Choose values aonly from 1 to 7");
+					break;
 
 				}
 			}while (machine.getCanAcceptMoney());
@@ -68,11 +76,15 @@ public class Main {
 			hasExited=true;
 			System.out.println("Thank you!! Enjoy your day");
 			break;
+		default :
+			System.out.println("Choose values aonly from 1 to 5");
+			break;
 		}
 
-
-
-
+		}
+		catch(Exception e) {
+			System.out.println("Choose values aonly from 1 to 5");
+		}
 		}
 		}
 

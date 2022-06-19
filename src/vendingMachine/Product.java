@@ -1,6 +1,6 @@
 package vendingMachine;
 
-import payment.Item;
+import MockData.Item;
 
 public class Product {
 	private Item item;

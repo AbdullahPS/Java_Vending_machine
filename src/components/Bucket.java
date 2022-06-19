@@ -26,6 +26,7 @@ public class Bucket {
 	}
 	public void clearBucket() {
 		currentCoins.clear();
+		currentNotes.clear();
 	}
 	private void fillCoins() {
 			machineCoins.put(Coin.TenCent,InitialProducts.MockCoins[0] );

@@ -1,4 +1,4 @@
-package payment;
+package MockData;
 
 public enum Item {
 	Mars(2),

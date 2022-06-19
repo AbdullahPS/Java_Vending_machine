@@ -2,8 +2,6 @@ package MockData;
 
 import java.util.Random;
 
-import payment.Item;
-
 
 public class InitialProducts {
 	public final static Item items[]= {

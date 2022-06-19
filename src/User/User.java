@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import MockData.Item;
 import payment.*;
 import vendingMachine.Product;
 public class User {
@@ -26,8 +27,9 @@ public int insertMoney(Scanner scanner) {
 	System.out.println("2. 20 Cent Coin ");
 	System.out.println("3. 50 Cent Coin ");
 	System.out.println("4. 1 Dollar Coin ");
-	System.out.println("5. 20 Dollar Coin ");
-	System.out.println("6. 50 Dollar Coin ");
+	System.out.println("5. 20 Dollar Note ");
+	System.out.println("6. 50 Dollar Note ");
+	System.out.println("7. Cancel and get money back");
 	return scanner.nextInt();
 	
 }
@@ -45,8 +47,9 @@ public void showItems(TreeMap<String,Product> machineItems){
 			
 		}
 		System.out.print(product.getPrice()+"$  ||   ");
-		if(i%3==0) {
-			System.out.println("\n--------------------------------------------------------------------------------");
+		if(i%5==0) {
+			System.out.print("\n--------------------------------------------------------------------------------");
+			System.out.println("--------------------------------------------------------------------------------");
 }
 		}
 	

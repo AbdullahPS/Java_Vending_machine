@@ -3,7 +3,7 @@ package components;
 
 import java.util.TreeMap;
 
-import payment.Item;
+import MockData.Item;
 import vendingMachine.Product;
 
 public class SnackSlot {
@@ -59,7 +59,7 @@ public class SnackSlot {
 				    break;
 
 				}
-				items.put(key, new Product(initItems[itemIndex],10,key));
+				items.put(key, new Product(initItems[itemIndex],1,key));
 				itemIndex++;
 				
 			}
