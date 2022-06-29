@@ -22,9 +22,9 @@ public class VendingMachineImpl implements VendingMachine {
 	private Keypad keypad=new Keypad();
 	private SnackSlot snackslot =new SnackSlot();
 	private Bucket bucket =new Bucket();
-	Display display =new Display(1);
-	private boolean isCardInserted=false;
+	private Display display =new Display(1);
 	private Scanner scanner =new Scanner(System.in);
+	private boolean isCardInserted=false;
 	private boolean canAcceptMoney=false;
 	private String selectedItemId=null;
 
@@ -66,10 +66,6 @@ public class VendingMachineImpl implements VendingMachine {
 		}
 	
 
-
-	 public boolean getCanAcceptMoney() {
-		 return canAcceptMoney;
-	 }
 	 @Override
 	 public void getInput(Scanner scanner) {
 		display.displayMessage("Please enter the item ID");
@@ -98,15 +94,16 @@ public class VendingMachineImpl implements VendingMachine {
 		
 		}
 	 }
+	 public boolean getCanAcceptMoney() {
+		 return canAcceptMoney;
+	 }
 	
    public void getInput(Scanner scanner,Card card)  {
 	if(selectedItemId==null) {
 		display.displayMessage("Please select an item first");
 		return;
 	}
-	if(card.isBlocked) {
-		
-	}
+	
 	isCardInserted=true;
 	display.displayMessage("Please enter your Pin");
 	while(!keypad.getIsChecking()) {
@@ -153,9 +150,18 @@ public class VendingMachineImpl implements VendingMachine {
 		 if(!isCardInserted) {
 		double change=bucket.getCurrentAmount()-snackslot.getPrice(selectedItemId);
 		change=Double.parseDouble(String.format("%.2f", change));
-		bucket.insertPurchaseMoney();
+		 try {
+		 bucket.getPossibleCombinations(change);
 		 display.displayMessage("You get back "+change);
-		 bucket.getPossibleCombinations(change);}
+		 bucket.insertPurchaseMoney();
+
+		 }
+		 catch(Exception e) {
+			 System.out.println(e);
+			 onCancelPress();
+			 return;
+		 }
+		 }
 		 else {
 			 display.displayMessage("Card Payment completed succesfully");
 			 this.isCardInserted=false;
@@ -183,7 +189,7 @@ public class VendingMachineImpl implements VendingMachine {
 		if(!card.isBlocked()) {
 		card.validateCard(pin);
 		if(card.isValidated()) {
-			display.displayMessage("Succesfullty accepted Card");
+			display.displayMessage("Succesfully accepted Card");
 			display.displayMessage("Checking for sufficient balance");
 			if(card.getValue()>=snackslot.getName(selectedItemId).getPrice()) {
 				card.withDrawMoney(snackslot.getName(selectedItemId).getPrice());

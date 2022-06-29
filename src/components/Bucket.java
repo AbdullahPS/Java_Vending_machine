@@ -10,6 +10,7 @@ import payment.Coin;
 import payment.Note;
 import java.util.TreeMap;
 
+import Exceptions.MachineCantGiveChangeException;
 import MockData.InitialProducts;
 
 public class Bucket {
@@ -54,7 +55,7 @@ public class Bucket {
 	}
 	
 	
-	public void getPossibleCombinations(double change) {
+	public void getPossibleCombinations(double change) throws MachineCantGiveChangeException {
 		
 		//we assume that the bucket of the vendor is always filled and that 
 		//it will always give the least amount of notes
@@ -63,19 +64,23 @@ public class Bucket {
 
 		for (Entry<Note, Integer> entry : machineNotes.entrySet()) {
 			Note note=entry.getKey();
+			if(entry.getValue()>0) {
 			int amount = (int) (change/note.getValue());
 			noteQuantities.put(note,amount);
 			change=change-noteQuantities.get(note)*note.getValue();
+			}
 		}
 		for (Entry<Coin, Integer> entry : machineCoins.entrySet()) {
 			Coin coin=entry.getKey();
+			if(entry.getValue()>0) {
 			int amount = (int) (change/coin.getValue());
 			coinQuantities.put(coin,amount);
 			change=change-coinQuantities.get(coin)*coin.getValue();
+			}
 		}
-		
+		if(change==0)
 		withDraw(noteQuantities,coinQuantities);
-
+		else throw new MachineCantGiveChangeException("No available money ....cancelled");
 	}
 
 		

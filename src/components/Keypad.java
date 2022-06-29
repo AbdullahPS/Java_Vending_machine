@@ -71,7 +71,7 @@ public void pressKey(String input,InputType type) {
 		}
 	}
 	
-	else {//all numbers but OK
+	else {
 		if(value.length()>maximiumLength) return ;
 		setValue(value+input);
 	}

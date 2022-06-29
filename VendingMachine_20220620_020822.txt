@@ -1,0 +1,14 @@
+WARNING - 02:08:22: Creating types 
+WARNING - 02:08:22: Initializing types
+ERROR - The operation was not stored in the content of an Enumeration : Item
+ERROR - The operation was not stored in the content of an Enumeration : Item
+ERROR - The operation was not stored in the content of an Enumeration : Coin
+ERROR - The operation was not stored in the content of an Enumeration : Coin
+ERROR - The operation was not stored in the content of an Enumeration : InputType
+ERROR - The operation was not stored in the content of an Enumeration : InputType
+ERROR - The operation was not stored in the content of an Enumeration : Note
+ERROR - The operation was not stored in the content of an Enumeration : Note
+WARNING - 02:08:24: Generic post-process : Creating usages and associations
+WARNING - 02:08:24: Generic post-process : Creating activities
+WARNING - 02:08:24: Saving uml file /resource/VendingMachine/VendingMachine.uml
+WARNING - 02:08:24: Uml file /resource/VendingMachine/VendingMachine.uml saved
